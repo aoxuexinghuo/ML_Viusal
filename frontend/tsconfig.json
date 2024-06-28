@@ -1,0 +1,18 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig/tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig/tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig/tsconfig.vitest.json"
+    }
+  ],
+  "compilerOptions": {
+    "module": "es2022",
+    // 其他选项...
+  }
+}
