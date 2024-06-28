@@ -1,0 +1,5 @@
+.idea
+./ML_visual_backend/.idea
+./ML_visual_backend/.venv
+./frontend/.idea
+./frontend/node_modules
