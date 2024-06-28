@@ -11,3 +11,14 @@
 * TODO：
     * 各种算法及其可视化
     * 管理员界面
+
+* 运行
+    * 前端
+        * `cd frontend`
+        * `npm install` or `cnpm install`
+        * `npm run dev`
+    * 后端
+        * `cd ML_visual_backend`
+        * `pip install -r requirements.txt`
+        * `python manage.py migrate`
+        * `python manage.py runserver localhost:8080`
