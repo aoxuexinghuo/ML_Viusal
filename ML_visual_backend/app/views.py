@@ -60,22 +60,3 @@ def login(request):
     except json.JSONDecodeError:
         return HttpResponseBadRequest('Invalid JSON')
 
-
-@require_http_methods(["GET"])
-def get_user_all(request):
-    # 获取所有 User 对象
-    users = User.objects.all()
-
-    # 创建一个列表来存储用户数据
-    user_list = []
-    for user in users:
-        user_data = {
-            'username': user.username,
-            'email': user.email,
-            'register_date': user.register_date.strftime('%Y-%m-%d %H:%M:%S'),
-        }
-        user_list.append(user_data)
-
-    # 返回 JSON 响应
-    return JsonResponse(user_list, safe=False)
-

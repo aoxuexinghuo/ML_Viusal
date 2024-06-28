@@ -57,18 +57,7 @@ const router = createRouter({
 
       ]
     },
-    //管理员界面
-    {
-      path:'/admin',
-      name:'admin',
-      component: ()=>import('../views/AdminView/AdminView.vue'),
-    },
-    //用户界面
-    {
-      path:'/user',
-      name:'user',
-      component: ()=>import('../views/UserView/UserView.vue'),
-    },
+
     //测试界面
     {
       path: '/test',

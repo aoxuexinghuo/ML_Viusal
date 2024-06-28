@@ -12,11 +12,8 @@ import 'echarts'
 
 const app = createApp(App)
 
-// 将axios挂载到原型对象上
 app.config.globalProperties.$axios = axios;
-// 设置axios请求的地址默认是'/api'，后续会通过代理转移
 axios.defaults.baseURL = "/api";
-// 请求时带上cookie
 axios.defaults.withCredentials = true;
 
 // 使用icon
