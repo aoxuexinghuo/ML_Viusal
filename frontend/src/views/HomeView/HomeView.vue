@@ -26,6 +26,9 @@
                     <span @click="registerDialog = true">注册</span>
                   </el-dropdown-item>
                   <el-dropdown-item v-if="username !=='未登录'">
+                    <span @click="get_user_info">个人信息</span>
+                  </el-dropdown-item >
+                  <el-dropdown-item v-if="username !=='未登录'">
                     <span @click="logout">退出登录</span>
                   </el-dropdown-item >
                 </el-dropdown-menu>
@@ -198,6 +201,14 @@
     </el-form>
 
   </el-dialog>
+  <el-drawer v-model="user_info_drawer" title="个人信息">
+    <el-descriptions :items="user_info" column="1" border>
+      <el-descriptions-item label="用户名：">{{ user_info.username }}</el-descriptions-item>
+      <el-descriptions-item label="邮箱：">{{ user_info.email }}</el-descriptions-item>
+      <el-descriptions-item label="注册日期：">{{ user_info.register_date }}
+      </el-descriptions-item>
+    </el-descriptions>
+  </el-drawer>
 </template>
 
 <script>
@@ -222,7 +233,6 @@ export default {
       },
       user_info:{
         username: null,
-        password: null,
         email: null,
         register_date: null,
       },
@@ -290,7 +300,19 @@ export default {
       localStorage.removeItem("username");
       this.$message.success("退出成功");
       this.username = '未登录';
-      }
+      },
+    get_user_info() {
+      this.request.get("/user_info").then((res) => {
+        if (res.status === 200) {
+          this.user_info = res.data;
+          this.user_info_drawer = true;
+        } else {
+          this.$message.error(res.message);
+        }
+      }).catch(error => {
+        this.$message.error(error.response.data.message);
+      });
+    },
   }
 };
 </script>

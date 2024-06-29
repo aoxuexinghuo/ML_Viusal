@@ -5,15 +5,35 @@ from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import api_view
 
+from .jwt_utils import create_access_token, decode_access_token, validate_token
 from .models import User
 
 
+@swagger_auto_schema(
+    operation_summary="注册",
+    tags=['用户接口'],
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='用户名'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='密码'),
+            'email': openapi.Schema(type=openapi.TYPE_STRING, description='邮箱'),
+        }),
+    responses={200: openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'message': openapi.Schema(type=openapi.TYPE_STRING, description='注册成功'),
+        }
+    )}
+)
 @csrf_exempt
 @require_http_methods(["POST"])
+@api_view(['POST'])
 def register(request):
     try:
         data = json.loads(request.body)
@@ -24,6 +44,9 @@ def register(request):
         if User.objects.filter(username=username).exists():
             return JsonResponse({'error': '用户名已存在'}, status=400)
 
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'error': '邮箱已存在'}, status=400)
+
         hashed_password = make_password(password)
         User.objects.create(username=username, password=hashed_password, email=email)
 
@@ -33,30 +56,82 @@ def register(request):
     except json.JSONDecodeError:
         return HttpResponseBadRequest('Invalid JSON')
 
+
+@swagger_auto_schema(
+    operation_summary="登录",
+    tags=['用户接口'],
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='用户名'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='密码'),
+        }),
+    responses={200: openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'message': openapi.Schema(type=openapi.TYPE_STRING, description='登录成功'),
+            'access': openapi.Schema(type=openapi.TYPE_STRING, description='access token'),
+            'refresh': openapi.Schema(type=openapi.TYPE_STRING, description='refresh token'),
+        }
+    )})
 @csrf_exempt
 @require_http_methods(["POST"])
+@api_view(['POST'])
 def login(request):
     try:
         data = json.loads(request.body)
         username = data['username']
         password = data['password']
 
-        try:
-            user = User.objects.get(username=username)
-            if check_password(password, user.password):
-                refresh = RefreshToken.for_user(user)
-                access_token = str(refresh.access_token)
-                return JsonResponse({
-                    'message': '登录成功',
-                    'access': access_token,
-                    'refresh': str(refresh)
-                })
-            else:
-                return JsonResponse({'error': 'Invalid password'}, status=400)
-        except User.DoesNotExist:
-            return JsonResponse({'error': 'User does not exist'}, status=400)
+        user = User.objects.filter(username=username).first()
+        if user is None:
+            return JsonResponse({'error': '用户不存在'}, status=400)
+
+        if not check_password(password, user.password):
+            return JsonResponse({'error': '密码错误'}, status=400)
+
+        access_token = create_access_token(identity=user.username)
+
+        return JsonResponse({'message': '登录成功', 'access': access_token})
     except KeyError:
         return HttpResponseBadRequest('Invalid data')
     except json.JSONDecodeError:
         return HttpResponseBadRequest('Invalid JSON')
+
+
+# 获取用户信息
+@swagger_auto_schema(
+    operation_summary="获取用户信息",
+    tags=['用户接口'],
+    methods=['GET'],
+    responses={200: openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'username': openapi.Schema(type=openapi.TYPE_STRING, description='用户名'),
+            'email': openapi.Schema(type=openapi.TYPE_STRING, description='邮箱'),
+            'register_date': openapi.Schema(type=openapi.TYPE_STRING, description='注册时间'),
+        }
+    )})
+@require_http_methods(["GET"])
+@api_view(['GET'])
+def get_user_info(request):
+    try:
+        username = validate_token(request)
+        if username is None:
+            return JsonResponse({'error': '未登录'}, status=401)
+
+        user = User.objects.filter(username=username).first()
+        if user is None:
+            return JsonResponse({'error': '用户不存在'}, status=404)
+
+        return JsonResponse({
+            'username': user.username,
+            'email': user.email,
+            'register_date': user.register_date.strftime('%Y-%m-%d %H:%M:%S')
+        })
+    except Exception as e:
+        return JsonResponse({'error': '请求失败'}, status=500)
+
+
 
