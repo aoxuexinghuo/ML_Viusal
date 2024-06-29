@@ -39,80 +39,80 @@
       </el-container>
     </el-header>
     <el-container>
-      <el-aside height="640px" width="200px">
-        <el-container>
+      <el-aside height="640px" width="220px">
+        <el-container >
           <el-main>
             <el-menu>
               <el-menu-item index="1">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <StarFilled/>
                   </el-icon>
-                  <div @click="router.push('/linear_regression')">线性回归</div>
+                  <div @click="router.push('/linear_regression')" class="custom-text">线性回归</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="2">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <StarFilled/>
                   </el-icon>
-                  <div @click="router.push('/decision_tree_id3')">决策树（ID3）</div>
+                  <div @click="router.push('/decision_tree_id3')" class="custom-text">决策树（ID3）</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="3">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <StarFilled/>
                   </el-icon>
-                  <div @click="router.push('/svm')">支持向量机</div>
+                  <div @click="router.push('/svm')" class="custom-text">支持向量机</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="4">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <StarFilled/>
                   </el-icon>
-                  <div @click="router.push('/native_bayes')">朴素贝叶斯</div>
+                  <div @click="router.push('/native_bayes')" class="custom-text">朴素贝叶斯</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="5">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <StarFilled/>
                   </el-icon>
-                  <div @click="router.push('/knn')">K 最近邻</div>
+                  <div @click="router.push('/knn')" class="custom-text">K 最近邻</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="6">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <Grid/>
                   </el-icon>
-                  <div @click="router.push('/k_means')">K means</div>
+                  <div @click="router.push('/k_means')" class="custom-text">K means</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="7">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <Grid/>
                   </el-icon>
-                  <div @click="router.push('/dbscan')">DBScan</div>
+                  <div @click="router.push('/dbscan')" class="custom-text">DBScan</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="8">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <Grid/>
                   </el-icon>
-                  <div @click="router.push('/pca')">PCA</div>
+                  <div @click="router.push('/pca')" class="custom-text">PCA</div>
                 </template>
               </el-menu-item>
               <el-menu-item index="9">
                 <template #title>
-                  <el-icon>
+                  <el-icon class="custom-icon">
                     <Grid/>
                   </el-icon>
-                  <div @click="router.push('/apriori')">Apriori</div>
+                  <div @click="router.push('/apriori')" class="custom-text">Apriori</div>
                 </template>
               </el-menu-item>
             </el-menu>
@@ -319,8 +319,18 @@ export default {
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import {Setting} from "@element-plus/icons-vue";
+import { Grid, Setting, StarFilled } from '@element-plus/icons-vue'
 import router from "@/router";
 
 </script>
 
+<style>
+.custom-icon {
+  font-size: 15px;
+  margin-right: 8px;
+}
+
+.custom-text {
+  font-size: 15px;
+}
+</style>

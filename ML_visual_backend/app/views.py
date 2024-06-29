@@ -9,6 +9,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 
+from .algs.linear_regression import linear_regression
 from .jwt_utils import create_access_token, decode_access_token, validate_token
 from .models import User
 
@@ -100,7 +101,6 @@ def login(request):
         return HttpResponseBadRequest('Invalid JSON')
 
 
-# 获取用户信息
 @swagger_auto_schema(
     operation_summary="获取用户信息",
     tags=['用户接口'],
@@ -134,4 +134,33 @@ def get_user_info(request):
         return JsonResponse({'error': '请求失败'}, status=500)
 
 
+@swagger_auto_schema(
+    operation_summary="线性回归",
+    tags=['算法接口'],
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'inputData': openapi.Schema(type=openapi.TYPE_ARRAY, description='输入数据', items=openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER))),
+        }),
+    responses={200: openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'predictData': openapi.Schema(type=openapi.TYPE_ARRAY, description='预测数据', items=openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_NUMBER))),
+        }
+    )})
+@csrf_exempt
+@require_http_methods(["POST"])
+@api_view(['POST'])
+def linear_regression_api(request):
+
+    data = json.loads(request.body)
+
+    input = data['inputData']
+
+    result = linear_regression(input)
+
+    return JsonResponse({
+        'predictData': result,
+    })
 
