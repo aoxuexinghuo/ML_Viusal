@@ -10,6 +10,8 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view
 
 from .algs.linear_regression import linear_regression
+from .algs.decision_tree_id3 import decision_tree_id3
+from .algs.decision_tree_id3 import generate_tree_mermaid_code
 from .jwt_utils import create_access_token, decode_access_token, validate_token
 from .models import User
 
@@ -164,3 +166,55 @@ def linear_regression_api(request):
         'predictData': result,
     })
 
+
+@swagger_auto_schema(
+    operation_summary="决策树(ID3)",
+    tags=['算法接口'],
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,  # 请求体是一个对象
+        properties={
+            'inputData': openapi.Schema(
+                type=openapi.TYPE_ARRAY,  # 'inputData' 是一个数组
+                description='输入数据',  # 描述 'inputData' 为输入数据
+                items=openapi.Schema(
+                    type=openapi.TYPE_ARRAY,  # 数组中的每个元素也是一个数组
+                    items=openapi.Schema(type=openapi.TYPE_STRING)  # 数组中的每个元素是字符串类型
+                )
+            ),
+            'featureName': openapi.Schema(
+                type=openapi.TYPE_ARRAY,  # 'featureName' 是一个数组
+                description='特征名称',  # 描述 'featureName' 为特征名称
+                items=openapi.Schema(type=openapi.TYPE_STRING)  # 数组中的每个元素是字符串类型
+            )
+        }
+    ),
+    responses={200: openapi.Schema(
+        type=openapi.TYPE_OBJECT,  # 响应体是一个对象
+        properties={
+            'ID3_tree': openapi.Schema(
+                type=openapi.TYPE_OBJECT,  # 'ID3_tree' 是一个对象
+                description='决策树(ID3)的mermaid代码',  # 描述 'ID3_tree' 为决策树
+                additional_properties=openapi.Schema(type=openapi.TYPE_OBJECT)  # 对象可以包含任意属性
+            ),
+        }
+    )}
+)
+@csrf_exempt  # 禁用 CSRF 保护，通常用于 API 接口
+@require_http_methods(["POST"])  # 限制视图函数只接受 POST 请求
+@api_view(['POST'])  # 将视图函数标记为 Django REST framework 的视图函数，接受 POST 请求
+def decision_tree_id3_api(request):
+    # 从请求的主体中加载 JSON 数据
+    data = json.loads(request.body)
+
+    # 提取 'inputData' 属性
+    input_data = data['inputData']
+    feature_name = data['featureName']
+    # 将数据转换为字典格式
+    data_dicts = [dict(zip(feature_name, row)) for row in input_data]
+    # 调用决策树函数，传入输入数据，并获取决策树结果
+    result_tree_mermaid_code = generate_tree_mermaid_code(data_dicts)
+    # 返回 JSON 响应，其中包含决策树的mermaid代码
+    return JsonResponse({
+        'ID3_tree_mermaid_code': result_tree_mermaid_code,  # 'ID3_tree' 是生成的决策树
+    })

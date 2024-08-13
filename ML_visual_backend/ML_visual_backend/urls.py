@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/login', views.login, name='login'),
     path('api/user_info', views.get_user_info, name='get_user_info'),
     path('api/alg/linear_regression', views.linear_regression_api, name='linear_regression'),
+    path('api/alg/decision_tree_id3', views.decision_tree_id3_api, name='decision_tree_id3'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

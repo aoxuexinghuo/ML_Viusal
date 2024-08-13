@@ -7,8 +7,9 @@ import axios from 'axios'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import request from "@/utils/request";
+import request from "@/utils/request"
 import 'echarts'
+import mermaid from 'mermaid'
 
 const app = createApp(App)
 
@@ -25,5 +26,11 @@ app.config.globalProperties.request = request ;
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+
+// 配置 mermaid
+mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default'
+});
 
 app.mount('#app')

@@ -3,7 +3,7 @@
 ## 1. 项目介绍
 
 ### 1.1 技术栈
-* 前端： Vue + ElementUI + Chart.js
+* 前端： Vue + ElementUI + Chart.js + mermaid
 * 后端： Django + JWT + Swagger + Sklearn
 * 数据库： MySQL
 
@@ -13,6 +13,9 @@
     * 后端框架
     * 用户注册、登录
     * 线性回归可视化
+    * 决策树（ID3）可视化
+    
+      
 * TODO：
     * 其他算法的可视化
     * 管理员功能（非必要）
@@ -39,3 +42,8 @@
 
 ### 2.3 线性回归
 ![linear_regression.png](image/linear_regression.png)
+
+### 2.4决策树（ID3）
+
+![decision_tree_id3.png](image/decision_tree_id3.png)
+
