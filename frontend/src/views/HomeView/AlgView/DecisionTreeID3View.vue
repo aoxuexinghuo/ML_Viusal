@@ -26,7 +26,7 @@
             <el-select v-model="inputData[scope.$index][2]" placeholder="请选择">
               <el-option label="潮湿" value="High"></el-option>
               <el-option label="适宜" value="Normal"></el-option>
-              <el-option label="干燥" nvalue="Low"></el-option>
+              <el-option label="干燥" value="Low"></el-option>
             </el-select>
           </template>
         </el-table-column>

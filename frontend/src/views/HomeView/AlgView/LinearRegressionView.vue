@@ -5,12 +5,12 @@
       <el-table :data="inputData" style="width: 340px; margin-top: 20px" border stripe fit show-header size="small">
         <el-table-column prop="0" label="X" width="170px">
           <template v-slot="scope">
-            <el-input-number precision="1" v-model="inputData[scope.$index][0]" controls-position="right" />
+            <el-input-number :precision="1" v-model="inputData[scope.$index][0]" controls-position="right" />
           </template>
         </el-table-column>
         <el-table-column prop="1" label="Y" width="170px">
           <template v-slot="scope">
-            <el-input-number precision="1" v-model="inputData[scope.$index][1]" controls-position="right" />
+            <el-input-number :precision="1" v-model="inputData[scope.$index][1]" controls-position="right" />
           </template>
         </el-table-column>
       </el-table>
