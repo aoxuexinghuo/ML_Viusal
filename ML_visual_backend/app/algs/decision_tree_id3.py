@@ -9,11 +9,11 @@ def decision_tree_id3(data):
     df = pd.DataFrame(data)
 
     # 将分类变量转换为数值
-    df = pd.get_dummies(df, columns=['Outlook', 'Temperature', 'Humidity', 'Wind'])
+    df = pd.get_dummies(df, columns=['天气', '温度', '湿度', '风速'])
 
     # 准备数据
-    X = df.drop(columns=['PlayTennis'])
-    y = df['PlayTennis']
+    X = df.drop(columns=['打羽毛球'])
+    y = df['打羽毛球']
 
     # 分割数据集
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
@@ -31,23 +31,22 @@ def generate_tree_mermaid_code(data):
     def recurse_tree(node):
         if decision_tree.tree_.feature[node] != _tree.TREE_UNDEFINED:  # not a leaf
             name = feature_names[decision_tree.tree_.feature[node]]
-            threshold = decision_tree.tree_.threshold[node]
             left_child = decision_tree.tree_.children_left[node]
             right_child = decision_tree.tree_.children_right[node]
             node_id = f"node{node}"
             left_id = f"node{left_child}"
             right_id = f"node{right_child}"
             if decision_tree.tree_.threshold[node] != -2:  # check if it is a split node
-                decision_text = f"{name} <= {threshold:.2f}"
+                decision_text = f"{name}"
             else:
-                decision_text = f"{name} > {threshold:.2f}"
+                decision_text = f"{name}"
 
             return (
-                    f"{node_id}{{{decision_text}}}\n" +
+                    f"{node_id}([{decision_text}])\n" +
                     recurse_tree(left_child) +
                     recurse_tree(right_child) +
-                    f"{node_id} -->|True| {left_id}\n" +
-                    f"{node_id} -->|False| {right_id}\n"
+                    f"{node_id} -->|是| {left_id}\n" +
+                    f"{node_id} -->|否| {right_id}\n"
             )
         else:  # leaf node
             value = decision_tree.tree_.value[node]
@@ -57,5 +56,7 @@ def generate_tree_mermaid_code(data):
 
     # Start recursion from the root
     mermaid_code = "graph TD\n"
+    mermaid_code += "Root([Root]) --> node0\n"
     mermaid_code += recurse_tree(0)
+    # print(mermaid_code)
     return mermaid_code
