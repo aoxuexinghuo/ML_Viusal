@@ -15,7 +15,6 @@
     * 线性回归可视化
     * 决策树（ID3）可视化
     
-      
 * TODO：
     * 其他算法的可视化
     * 管理员功能（非必要）
@@ -27,6 +26,7 @@
     * `npm run dev`
 * 后端
     * `cd ML_visual_backend`
+    * 创建虚拟环境并激活``python -m .venv`， `.venv\Scripts\activate` 
     * `pip install -r requirements.txt`
     * 根据实际情况修改settings.py中的 DATABASES 配置
     * `python manage.py migrate`
