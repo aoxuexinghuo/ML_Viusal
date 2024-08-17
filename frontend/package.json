@@ -15,6 +15,7 @@
     "axios": "^1.3.4",
     "chart.js": "^4.4.1",
     "chartjs": "^0.3.24",
+    "cnpm": "^9.4.0",
     "echarts": "^4.9.0",
     "element-plus": "^2.2.33",
     "mermaid": "^10.9.1",

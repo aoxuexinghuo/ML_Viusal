@@ -6,43 +6,43 @@
         <el-table-column prop="0" label="天气" width="90px">
           <template v-slot="scope">
             <el-select v-model="inputData[scope.$index][0]" placeholder="请选择">
-              <el-option label="晴天" value="Sunny"></el-option>
-              <el-option label="雨天" value="Rain"></el-option>
-              <el-option label="阴天" value="Overcast"></el-option>
+              <el-option label="晴天" value="晴天"></el-option>
+              <el-option label="雨天" value="雨天"></el-option>
+              <el-option label="阴天" value="阴天"></el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="1" label="温度" width="90px">
           <template v-slot="scope">
             <el-select v-model="inputData[scope.$index][1]" placeholder="请选择">
-              <el-option label="炎热" value="Hot"></el-option>
-              <el-option label="适宜" value="Mild"></el-option>
-              <el-option label="寒冷" value="Cool"></el-option>
+              <el-option label="炎热" value="炎热"></el-option>
+              <el-option label="适宜" value="适宜"></el-option>
+              <el-option label="寒冷" value="寒冷"></el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="2" label="湿度" width="90px">
           <template v-slot="scope">
             <el-select v-model="inputData[scope.$index][2]" placeholder="请选择">
-              <el-option label="潮湿" value="High"></el-option>
-              <el-option label="适宜" value="Normal"></el-option>
-              <el-option label="干燥" value="Low"></el-option>
+              <el-option label="潮湿" value="潮湿"></el-option>
+              <el-option label="适宜" value="适宜"></el-option>
+              <el-option label="干燥" value="干燥"></el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="3" label="风速" width="90px">
           <template v-slot="scope">
             <el-select v-model="inputData[scope.$index][3]" placeholder="请选择">
-              <el-option label="强风" value="Strong"></el-option>
-              <el-option label="轻风" value="Weak"></el-option>
+              <el-option label="强风" value="强风"></el-option>
+              <el-option label="轻风" value="轻风"></el-option>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column prop="4" label="打羽毛球" width="90px">
           <template v-slot="scope">
             <el-select v-model="inputData[scope.$index][4]" placeholder="请选择">
-              <el-option label="合适" value="Yes"></el-option>
-              <el-option label="不宜" value="No"></el-option>
+              <el-option label="合适" value="合适"></el-option>
+              <el-option label="不宜" value="不宜"></el-option>
             </el-select>
           </template>
         </el-table-column>
@@ -70,44 +70,45 @@ export default {
     return {
       componentKey: 0,
       inputData: [
-        ['Sunny', 'Hot', 'High', 'Weak', 'No'],
-        ['Sunny', 'Hot', 'High', 'Strong', 'No'],
-        ['Overcast', 'Hot', 'High', 'Weak', 'Yes'],
-        ['Rain', 'Mild', 'High', 'Weak', 'Yes'],
-        ['Rain', 'Cool', 'Normal', 'Weak', 'Yes'],
-        ['Rain', 'Cool', 'Normal', 'Strong', 'No'],
-        ['Overcast', 'Cool', 'Normal', 'Strong', 'Yes'],
-        ['Sunny', 'Mild', 'High', 'Weak', 'No'],
-        ['Sunny', 'Cool', 'Normal', 'Weak', 'Yes'],
-        ['Rain', 'Mild', 'Normal', 'Weak', 'Yes'],
-        ['Sunny', 'Mild', 'Normal', 'Strong', 'Yes'],
-        ['Overcast', 'Mild', 'High', 'Strong', 'Yes'],
-        ['Overcast', 'Hot', 'Normal', 'Weak', 'Yes'],
-        ['Rain', 'Mild', 'High', 'Strong', 'No']
+        ['晴天', '炎热', '潮湿', '轻风', '不宜'],
+        ['晴天', '炎热', '潮湿', '强风', '不宜'],
+        ['阴天', '炎热', '潮湿', '轻风', '合适'],
+        ['雨天', '适宜', '潮湿', '轻风', '合适'],
+        ['雨天', '寒冷', '适宜', '轻风', '合适'],
+        ['雨天', '寒冷', '适宜', '强风', '不宜'],
+        ['阴天', '寒冷', '适宜', '强风', '合适'],
+        ['晴天', '适宜', '潮湿', '轻风', '不宜'],
+        ['晴天', '寒冷', '适宜', '轻风', '合适'],
+        ['雨天', '适宜', '适宜', '轻风', '合适'],
+        ['晴天', '适宜', '适宜', '强风', '合适'],
+        ['阴天', '适宜', '潮湿', '强风', '合适'],
+        ['阴天', '炎热', '适宜', '轻风', '合适'],
+        ['雨天', '适宜', '潮湿', '强风', '不宜']
       ],
 
-      featureName: ['Outlook', 'Temperature', 'Humidity', 'Wind', 'PlayTennis'],
+      featureName: ['天气', '温度', '湿度', '风速', '打羽毛球'],
 
       ID3_tree_mermaid_code: `
         graph TD
-        node0{Humidity_Normal <= 0.50}
-        node1{Outlook_Overcast <= 0.50}
-        node2["No"]
-        node3["Yes"]
-        node1 -->|True| node2
-        node1 -->|False| node3
-        node4{Wind_Strong <= 0.50}
-        node5["Yes"]
-        node6["No"]
-        node4 -->|True| node5
-        node4 -->|False| node6
-        node0 -->|True| node1
-        node0 -->|False| node4
+        Root([Root]) --> node0
+        node0([湿度_适宜])
+        node1([天气_阴天])
+        node2["不宜"]
+        node3["合适"]
+        node1 -->|是| node2
+        node1 -->|否| node3
+        node4([风速_强风])
+        node5["合适"]
+        node6["不宜"]
+        node4 -->|是| node5
+        node4 -->|否| node6
+        node0 -->|是| node1
+        node0 -->|否| node4
       `,
     }
   },
   methods: {
-    refresh_component(){
+    refresh_component() {
       this.componentKey += 1;
     },
     get_decision_tree_ID3_result() {

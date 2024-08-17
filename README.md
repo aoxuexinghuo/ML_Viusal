@@ -15,7 +15,6 @@
     * 线性回归可视化
     * 决策树（ID3）可视化
     
-      
 * TODO：
     * 其他算法的可视化
     * 管理员功能（非必要）
@@ -27,7 +26,10 @@
     * `npm run dev`
 * 后端
     * `cd ML_visual_backend`
-    * `pip install -r requirements.txt`
+    * 创建虚拟环境`python -m venv .venv`
+    * 激活虚拟环境`.venv\Scripts\activate`
+    * 下载依赖项`pip install -r requirements.txt`
+    * 下载超时则尝试使用镜像网站`pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple`
     * 根据实际情况修改settings.py中的 DATABASES 配置
     * `python manage.py migrate`
     * `python manage.py runserver localhost:8080`
