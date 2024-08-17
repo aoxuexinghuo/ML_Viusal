@@ -1,4 +1,5 @@
 .idea
+.venv
 ./ML_visual_backend/.idea
 ./ML_visual_backend/.venv
 __pycache__/
